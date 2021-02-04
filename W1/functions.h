@@ -104,3 +104,14 @@ void printInfo()
     cout << "Overweight: \t between 25 and 29.9" << endl;
     cout << "Obese: \t\t 30 or greater" << endl;
 }
+
+int calculateMaximumHeartRate(int age) {
+return 220 - age;
+}
+
+int calculateTargetHeartRates(int age) {
+   int Target_min = int(0.5*(220 - age));
+   int Target_max = int(0.85*(220 - age));
+   cout << Target_min << " to " << Target_max << endl;
+   return Target_min, Target_max;
+}
