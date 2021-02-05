@@ -4,7 +4,7 @@
  Authors     :  Hendrik van Gils    (s1920677)      h.vangils@student.utwente.nl
                 Deniz Ugurlu        (s1797735)      d.a.ugurlu@student.utwente.nl
  Version     :  1.0
- License     :  None other than access to Visual Studio Code.
+ License     :  None
  Description :  The aims op this program are:
                 1) to calculate and display the users BMI.
                 2) to calculate the maximum and target heartrate.
@@ -12,118 +12,46 @@
 */
 
 using namespace std;
-#include <iostream>
+#include <iostream> //Needed to compile standard library
 #include <string>
 #include <sstream>
-#include "functions.h"
-#include <ctime>
-
-class Person {
-    private: 
-        string firstName;
-        string lastName;
-        int birthDay;
-        int birthMonth;
-        int birthYear;
-
-
-    public:
-        Person(string inputFirstName, string inputLastName, int inputBirthDay, int inputBirthMonth, int inputBirthYear) {
-            firstName = inputFirstName;
-            lastName = inputLastName;
-            if (inputBirthDay >= 1 && inputBirthDay <=31) { birthDay = inputBirthDay; } //check if input date is within bounds and if so set private variable to new variable
-            else {cout << "input day not a real date\n";} // if not within bounds give error with appropriate text
-
-            if (inputBirthMonth >= 1 && inputBirthMonth <=12) { birthMonth = inputBirthMonth; } //check if input date is within bounds and if so set private variable to new variable
-            else {cout << "input month not a real date\n";} // if not within bounds give error with appropriate text
-
-            if (inputBirthYear >= 1 && inputBirthYear <=9999) { birthYear = inputBirthYear; } //check if input date is within bounds and if so set private variable to new variable
-            else {cout << "input year n0ot a real date\n";} // if not within bounds give error with appropriate text
-
-        }
-
-        void setName(string inputFirstName, string inputLastName) {
-            firstName = inputFirstName;
-            lastName = inputLastName;
-        }
-
-        void setDates(int day, int month, int year) {
-            if (day >= 1 && day <=31) { birthDay = day; } //check if input date is within bounds and if so set private variable to new variable
-            else {cout << "input day not a real date\n";} // if not within bounds give error with appropriate text
-
-            if (month >= 1 && month <=12) { birthMonth = month; } //check if input date is within bounds and if so set private variable to new variable
-            else {cout << "input month not a real date\n";} // if not within bounds give error with appropriate text
-
-            if (year >= 1 && year <=9999) { birthYear = year; } //check if input date is within bounds and if so set private variable to new variable
-            else {cout << "input year not a real date\n";} // if not within bounds give error with appropriate text
-        }
-
-        string getNames() {
-            return (firstName + " " + lastName);
-        }
-
-        string getinputFirstName() {
-            return (firstName);
-        }
-    
-        string getinputLastName() {
-            return (lastName);
-        }
-        string getDates() {
-            stringstream birthDate;
-            string outBirthDate;
-            birthDate << birthDay << "-" << birthMonth << "-" << birthYear;
-            birthDate >> outBirthDate;
-            return outBirthDate;
-        }
-        int getAge() {
-            // The next 7 lines come from https://cplusplus.com/forum/beginner/226899/
-
-            time_t tt;
-            time( &tt );
-            tm TM = *localtime( &tt );
-
-            int curr_Year    = TM.tm_year + 1900;
-            int curr_Month   = TM.tm_mon ;
-            int curr_Day     = TM.tm_mday;
-
-            // end of cplusplus copy-paste
-
-            int age = int((((curr_Year*12+curr_Month) - (birthYear*12+birthMonth))/12));
-            cout << age << endl;
-            return age;
-        }
-};
+#include "functions.h" //Includes our functions
+#include <ctime>       //Includes library to retrieve current date
+#include "Person.h"    //Includes our class
 
 void menu()
 {
-    cout << "\nWelcome to the Assignment 1:" << endl;
-    cout << "press 0 to quit\n" << endl;
-    cout << "Press 1 for the BMI calculator\n" << endl;
-    cout << "press 2 for Classes and such\n" << endl;
-    cout << "press 3 to input new person and calculate stuff\n" << endl;
+    cout << "\nWelcome to Assignment 1:" << endl;
+    cout << "press 0 to quit" << endl;
+    cout << "Press 1 for the BMI calculator" << endl;
+    cout << "press 2 for Classes and such" << endl;
+    cout << "press 3 to input new person and calculate stuff" << endl;
 
-    int input = get_integer(3); 
+    int input = getInteger(0, 3); // get an integer between 0 and 3
     if (input == 0)
     {
-        abort();    // abort quits the program.
+        cout << "Goodbye world...\n";
+        exit(EXIT_SUCCESS); // exits the program with cleaning up.
     }
     else if (input == 1) // Exercise 1
     {
-        evaluateAndPrintBMI(calculateBMI());
-        printInfo();
+        evaluateAndPrintBMI(calculateBMI()); //input the output of calculateBMI into evaluateAndPrintBMI
+        printInfo();                         //prints the info from the health services to the terminal for user reference
     }
-    else if (input == 2) // Exercise 2
+    else if (input == 2) // Exercise 2 part 1
     {
-        Person Person1("Deniz", "Ugurlu", 13, 04, 1997);
-        cout << Person1.getDates() << endl;
-        cout << Person1.getNames() << endl;
-        int age = Person1.getAge();
-        cout << "max BPM: " << calculateMaximumHeartRate(age) << endl << "Optimal Range:\n";
-        calculateTargetHeartRates(age);
+        Person person1("Mel", "Guru", 13, 05, 1997);                                               //create object called person1 with the constructor
+        cout << "Name of person is: " << person1.getNames() << endl;                               //Ouput the full name of the object
+        cout << "Birthday of " << person1.getFirstName() << " is: " << person1.getDates() << endl; //Output the birth dates to the user
+        person1.checkBirthday();                                                                   //Check if today is person1's birthday :), if so congratulate
+        cout << "The maximum heart rate of " << person1.getFirstName() << " is: "
+             << calculateMaximumHeartRate(person1.getAge()) << " BPM." << endl;            //Calculate the maximum BPM of person1 with function.
+        TargetHeartRates targetHeartRates = calculateTargetHeartRates(person1.getAge()); //calculate the BPM range making use of the variable addresses defined at 49 and 50
+        cout << "The target heart range of " << person1.getFirstName()
+             << " is between " << targetHeartRates.targetHeartRate << " and " << targetHeartRates.maxHeartRate << " BPM." << endl; //print the range
     }
 
-    else if (input == 3) 
+    else if (input == 3) // Exercise 2 part 2
     {
         string first_name;
         string last_name;
@@ -131,34 +59,41 @@ void menu()
         int birthMonth;
         int birthYear;
 
+        // Start by prompting the user for names and dates of object to be constructed
+
         cout << "Enter first name: \n";
-        cin >> first_name;
+        getline(cin, first_name); //prompt user for first name
         cout << "Enter last name: \n";
-        cin >> last_name;
+        getline(cin, last_name); //promt user for last name
         cout << "Enter Year of birth: \n";
-        cin >> birthYear;
+        birthYear = getInteger(1900, 2020); //get int between given boundaries from user
         cout << "Enter Month of birth: \n";
-        cin >> birthMonth;
+        birthMonth = getInteger(1, 12); //get int between given boundaries from user
         cout << "Enter Day of birth: \n";
-        cin >> birthMonth;
+        birthDay = getInteger(1, 31); //get int between given boundaries from user
 
-        Person person1(first_name, last_name, birthDay, birthMonth, birthYear);
-        cout << "Your birthday is: " << person1.getDates() << endl;
-        cout << "Your Name is: " << person1.getNames() << endl;
-        int age = person1.getAge();
-        cout << "max BPM: " << calculateMaximumHeartRate(age) << endl << "Optimal Range:\n";
-        calculateTargetHeartRates(age);
+        // Construct new object with given data and output max bpm and optimal range
 
+        Person person1(first_name, last_name, birthDay, birthMonth, birthYear);                    // Construct new object with given variables
+        cout << "Name of person is: " << person1.getNames() << endl;                               //Ouput the full name of the object
+        cout << "Birthday of " << person1.getFirstName() << " is: " << person1.getDates() << endl; //Output the birth dates to the user
+        person1.checkBirthday();                                                                   //Check if today is person1's birthday :), if so congratulate
+        cout << person1.getFirstName() << " is " << person1.getAge() << " years old." << endl;
+        cout << "The maximum heart rate of " << person1.getFirstName() << " is: "
+             << calculateMaximumHeartRate(person1.getAge()) << " BPM." << endl;            //Calculate the maximum BPM of person1 with function.
+        TargetHeartRates targetHeartRates = calculateTargetHeartRates(person1.getAge()); //calculate the BPM range making use of the variable addresses defined at 49 and 50
+        cout << "The target heart range of " << person1.getFirstName()
+             << " is between " << targetHeartRates.targetHeartRate << " and " << targetHeartRates.maxHeartRate << " BPM." << endl; //print the range
     }
 }
 
 int main()
 {
     cout << "\nHello world!" << endl;
-    while (true)    // 'infinite' loop for the menu (except that the menu can close the program)
+    while (true) // 'infinite' loop for the menu (except that the menu can close the program)
     {
-        menu();
+        menu(); // Start menu to allow user to choose which program to run
     }
-    cout << "Goodbye world...\n" << endl;
+
     return 0;
 }
