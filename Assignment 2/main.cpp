@@ -16,8 +16,8 @@ using namespace std;
 
 const int boardSize = 12; // Global variable board size gets initiated
 
-template <class anyType>                                              // Used as a placeholder so the type for the matrix can be defined later.
-using Matrix = std::array<std::array<anyType, boardSize>, boardSize>; // Defining "Matrix" as a 2D array with the dimensions of boardSize×boardSize
+template <class anyType>                                    // Used as a placeholder so the type for the matrix can be defined later.
+using Matrix = array<array<anyType, boardSize>, boardSize>; // Defining "Matrix" as a 2D array with the dimensions of boardSize×boardSize
 
 typedef Matrix<bool> BoolMatrix;      // Here the type gets defined as character
 typedef Matrix<char> CharacterMatrix; // "" as boolean
@@ -40,7 +40,8 @@ bool traverseMaze(CharacterMatrix maze);                                        
 // Main:
 int main()
 {
-  cout << "Hello world!" << "\n";
+  cout << "Hello world!"
+       << "\n";
   CharacterMatrix mazeToSolve{// Initiate the maze that needs to be solved
                               '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#',
                               '#', '.', '.', '.', '#', '.', '.', '.', '.', '.', '.', '#',
@@ -98,7 +99,8 @@ RowAndColumn linearSearch2DArray(anyType key, Matrix<anyType> matrix)
       }
     }
   }
-  cout << "Key: \"" << key << "\" not found." << "\n"; // if key value can not be found return error message
+  cout << "Key: \"" << key << "\" not found."
+       << "\n"; // if key value can not be found return error message
 }
 
 // @param maze the maze that we want to solve, and thus find the exit of
@@ -149,17 +151,19 @@ bool traverseMaze(CharacterMatrix maze, BoolMatrix &visited, RowAndColumn mazeEx
   {
     if (maze[location.row][location.column + 1] != '#' && (visited[location.row][location.column + 1] == 0)) // if there is no wall on the right and the character has not been there yet
     {
-      location.column++;                                   // move to the right
-      maze[location.row][location.column] = 'x';           // visually move to the right
-      cout << "went right" << "\n";                        // state that the character moved to the right
+      location.column++;                         // move to the right
+      maze[location.row][location.column] = 'x'; // visually move to the right
+      cout << "went right"
+           << "\n";                                        // state that the character moved to the right
       if (traverseMaze(maze, visited, mazeExit, location)) // repeat this function, if it returns true that means the exit of the maze was found by the character
       {
         return true; // and thus return true
       }
       maze[location.row][location.column] = '.'; // if the exit of the maze was not found then revert the step that was taken
       location.column--;                         // ""
-      cout << "reversed left" << "\n";           // state that the character moved back
-      showMatrix(maze);                          // show the character going back
+      cout << "reversed left"
+           << "\n";     // state that the character moved back
+      showMatrix(maze); // show the character going back
     }
   }
 
@@ -167,17 +171,19 @@ bool traverseMaze(CharacterMatrix maze, BoolMatrix &visited, RowAndColumn mazeEx
   {
     if (maze[location.row][location.column - 1] != '#' && (visited[location.row][location.column - 1] == 0)) // if there is no wall on the left and the character has not been there yet
     {
-      location.column--;                                   // move to the left
-      maze[location.row][location.column] = 'x';           // visually move to the left
-      cout << "went left" << "\n";                         // state that the character moved to the left
+      location.column--;                         // move to the left
+      maze[location.row][location.column] = 'x'; // visually move to the left
+      cout << "went left"
+           << "\n";                                        // state that the character moved to the left
       if (traverseMaze(maze, visited, mazeExit, location)) // repeat this function, if it returns true that means the exit of the maze was found by the character
       {
         return true; // and thus return true
       }
       maze[location.row][location.column] = '.'; // if the exit of the maze was not found then revert the step that was taken
       location.column++;                         // ""
-      cout << "reversed right" << "\n";          // state that the character moved back
-      showMatrix(maze);                          // show the character going back
+      cout << "reversed right"
+           << "\n";     // state that the character moved back
+      showMatrix(maze); // show the character going back
     }
   }
 
@@ -185,17 +191,19 @@ bool traverseMaze(CharacterMatrix maze, BoolMatrix &visited, RowAndColumn mazeEx
   {
     if (maze[location.row + 1][location.column] != '#' && (visited[location.row + 1][location.column] == 0)) // if there is no wall below the character and the character has not been there yet
     {
-      location.row++;                                      // move down
-      maze[location.row][location.column] = 'x';           // visually move down
-      cout << "went down" << "\n";                         // state that the character moved down
+      location.row++;                            // move down
+      maze[location.row][location.column] = 'x'; // visually move down
+      cout << "went down"
+           << "\n";                                        // state that the character moved down
       if (traverseMaze(maze, visited, mazeExit, location)) // repeat this function, if it returns true that means the exit of the maze was found by the character
       {
         return true; // and thus return true
       }
       maze[location.row][location.column] = '.'; // if the exit of the maze was not found then revert the step that was taken
       location.row--;                            // ""
-      cout << "reversed up" << "\n";             // state that the character moved back
-      showMatrix(maze);                          // show the character going back
+      cout << "reversed up"
+           << "\n";     // state that the character moved back
+      showMatrix(maze); // show the character going back
     }
   }
 
@@ -203,17 +211,19 @@ bool traverseMaze(CharacterMatrix maze, BoolMatrix &visited, RowAndColumn mazeEx
   {
     if (maze[location.row - 1][location.column] != '#' && (visited[location.row - 1][location.column] == 0)) // if there is no wall above the character and the character has not been there yet
     {
-      location.row--;                                      // move up
-      maze[location.row][location.column] = 'x';           // visually move up
-      cout << "went up" << "\n";                           // state that the character moved up
+      location.row--;                            // move up
+      maze[location.row][location.column] = 'x'; // visually move up
+      cout << "went up"
+           << "\n";                                        // state that the character moved up
       if (traverseMaze(maze, visited, mazeExit, location)) // repeat this function, if it returns true that means the exit of the maze was found by the character
       {
         return true; // and thus return true
       }
       maze[location.row][location.column] = '.'; // if the exit of the maze was not found then revert the step that was taken
       location.row++;                            // ""
-      cout << "reversed down" << "\n";           // state that the character moved back
-      showMatrix(maze);                          // show the character going back
+      cout << "reversed down"
+           << "\n";     // state that the character moved back
+      showMatrix(maze); // show the character going back
     }
   }
 
