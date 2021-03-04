@@ -30,7 +30,7 @@ public:
         }
     }
 
-    float calculateCost() const
+    float calculateCost() override
     {
         return 2.5*weight + 5 + 1.10*weight*weight;
     }
