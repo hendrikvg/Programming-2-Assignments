@@ -55,6 +55,12 @@ public:
         } // endif
     }
 
+    // Virtual destructor
+    virtual ~TwoDayPackage()
+    {
+        std::cout << "Destructing TwoDayPackage...\n";
+    }    
+
     // calculateCost() calculates the cost of this package
     // @returns the cost as a floating number
     float calculateCost() override

@@ -70,6 +70,12 @@ public:
         } // endif
     }
 
+    // Virtual destructor
+    virtual ~Package()
+    {
+        std::cout << "Destructing Package...\n";
+    }
+
     virtual float calculateCost() = 0; // Pure virtual function
 };
 
